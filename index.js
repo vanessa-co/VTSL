@@ -29,6 +29,15 @@ function handleSearchButtonClick() {
       } else {
         recipeCardsContainer.innerHTML = '<h2 style="color: pink;">No resuts, loser!</h2><iframe src="https://giphy.com/embed/lBm6rHWoBEpaw" width="480" height="313" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/lBm6rHWoBEpaw">via GIPHY</a></p>';
       }
+
+      // code for buttons to work individually <- Tim
+      const buttons = document.querySelectorAll(".like-button");
+      buttons.forEach(button => {
+        button.addEventListener('click', () => {
+          if (button.innerText=="Like <3") button.innerText = "You liked this! <3";
+          else button.innerText = "Like <3";
+        });
+    });
   });
 }
 
@@ -87,6 +96,7 @@ function buildRecipeCardHTML(drink) {
   return `
     <img src="${drink.strDrinkThumb}" />
     <h2 align="center">${drink.strDrink}</h2>
+    <button type="button" class="like-button">Like <3</button>
   `;
 }
 
