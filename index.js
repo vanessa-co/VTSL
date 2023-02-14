@@ -56,6 +56,7 @@ function addRecipeCard(drink) {
   })
   
   recipeCardElement.addEventListener("mouseover", function (event) {
+    recipeCardElement.style.backgroundColor = 'lightgray';
     let target = event.target;
     let parent = target.parentElement;
     let ingredientArray = [];
