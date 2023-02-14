@@ -20,6 +20,10 @@ body {
     font-style: italic;
     margin: 0;
   }
+
+  p {
+    line-height: 10px;
+  }
   
   input[type="text"] {
     width: 60%;
