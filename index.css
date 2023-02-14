@@ -69,4 +69,6 @@ body {
     object-fit: cover;
   }
   
-  
+  /* Start https://www.cursors-4u.com */ * 
+  {cursor: url(https://cur.cursors-4u.net/food/foo-5/foo516.cur), auto !important;} 
+  /* End https://www.cursors-4u.com */
