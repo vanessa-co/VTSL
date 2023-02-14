@@ -2,6 +2,14 @@ const searchButtonElement = document.querySelector('#search-button');
 const searchInputElement = document.querySelector('#search-bar');
 const recipeCardsContainer = document.querySelector('.recipes-container');
 
+//Disable the search button on initial page load
+searchButtonElement.disabled = true;
+
+//Enable the search button when a user types in the search field
+searchInputElement.addEventListener('keyup', (event) => {
+    searchButtonElement.disabled = false;
+});
+
 // function to handle the search button click
 function handleSearchButtonClick() {
   // Get the value of the search bar
@@ -15,8 +23,13 @@ function handleSearchButtonClick() {
       clearRecipeCardsContainer();
 
       // Loop through the drinks in the data and add a recipe card for each one
-      data.drinks.forEach(addRecipeCard);
-    });
+      //only execute the forEach loop if the data object is not empty, else show "No results found" message
+      if(data.drinks != null) {
+        data.drinks.forEach(addRecipeCard);
+      } else {
+        recipeCardsContainer.innerHTML = '<h2 style="color: pink;">No resuts, loser!</h2><iframe src="https://giphy.com/embed/lBm6rHWoBEpaw" width="480" height="313" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/lBm6rHWoBEpaw">via GIPHY</a></p>';
+      }
+  });
 }
 
 // function to clear the recipe cards container
@@ -26,16 +39,7 @@ function clearRecipeCardsContainer() {
 
 //function to handle a user mousing over a recipe card
 function handleRecipeCardMouseOver(event) {
-  //window.alert('Recipe card hovered!');
-  //recipeCardElement.innerHTML = "test";
-  let target = event.target;
-  let parent = target.parentElement;
-  console.log(parent);
-  console.log(target);
-  console.log(drink);
-  //target.innerHTML = "test";
-  //const elementToUpdate = event;
-  //elementToUpdate.innerHTML = "test";
+
 }
 
 // function to add a recipe card for a drink to the recipe cards container
@@ -46,13 +50,19 @@ function addRecipeCard(drink) {
 
   // Set the inner HTML of the recipe card to display the drink information
   recipeCardElement.innerHTML = buildRecipeCardHTML(drink);
+
+  recipeCardElement.addEventListener("mouseout", function (event) {
+    recipeCardElement.innerHTML = buildRecipeCardHTML(drink);
+  })
   
   recipeCardElement.addEventListener("mouseover", function (event) {
     let target = event.target;
     let parent = target.parentElement;
     let ingredientArray = [];
     
-    recipeCardElement.innerHTML =  `<h2 align="center">Ingredients:</h2>`
+    recipeCardElement.innerHTML =  `<h2 align="center">Glass:</h2>`
+    recipeCardElement.innerHTML += `<p align="center">${drink.strGlass}</p>`
+    recipeCardElement.innerHTML +=  `<h2 align="center">Ingredients:</h2>`
     const loopTimes = 16;
     for (let i = 1; i < loopTimes; i++) {
       let ingredient = "strIngredient" + i;
@@ -62,12 +72,6 @@ function addRecipeCard(drink) {
     }
   }});
   
-  recipeCardElement.addEventListener("mouseout", function (event) {
-    let target = event.target;
-    let parent = target.parentElement;
-    recipeCardElement.innerHTML = buildRecipeCardHTML(drink);
-  })
-
   // Append the recipe card to the recipe cards container
   recipeCardsContainer.appendChild(recipeCardElement);
 }
