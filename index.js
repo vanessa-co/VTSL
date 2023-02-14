@@ -66,9 +66,14 @@ function addRecipeCard(drink) {
     const loopTimes = 16;
     for (let i = 1; i < loopTimes; i++) {
       let ingredient = "strIngredient" + i;
+      let measurement = "strMeasure" + i;
       if (drink[ingredient] != null) {
+        if(drink[measurement] != null) {
         //ingredientArray.push(ingredient.strIngredient[i]);
-        recipeCardElement.innerHTML += `<p align="center">${drink[ingredient]}</p>`
+        recipeCardElement.innerHTML += `<p align="center">${drink[measurement]} ${drink[ingredient]}</p>`
+        } else {
+          recipeCardElement.innerHTML += `<p align="center">${drink[ingredient]}</p>`
+        }
     }
   }});
   
@@ -86,3 +91,17 @@ function buildRecipeCardHTML(drink) {
 
 // Add a click event listener to the search button
 searchButtonElement.addEventListener('click', handleSearchButtonClick);
+
+// Execute a function when the user presses a key on the keyboard
+searchInputElement.addEventListener("keypress", function(event) {
+  // If the user presses the "Enter" key on the keyboard
+  if (event.key === "Enter") {
+    // Cancel the default action, if needed
+    event.preventDefault();
+    // Trigger the button element with a click
+    searchButtonElement.click();
+  }
+});
+
+//Set focus to the search input element
+searchInputElement.focus();
