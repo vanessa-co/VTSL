@@ -5,6 +5,27 @@ const recipeCardsContainer = document.querySelector('.recipes-container');
 //Disable the search button on initial page load
 searchButtonElement.disabled = true;
 
+function swapThumbnailImage(drink) {
+  thumbnailDiv.style.backgroundColor = 'lightgray';
+    //console.log(drink);
+    thumbnailDiv.innerHTML = `<h2 align="center">Glass:</h2>`
+    thumbnailDiv.innerHTML += `<p align="center">${drink.strGlass}</p>`
+    thumbnailDiv.innerHTML += `<h2 align="center">Ingredients:</h2>`
+    
+    const loopTimes = 16;
+    for (let count = 1; count < loopTimes; count++) {
+      let ingredient = "strIngredient" + count;
+      let measurement = "strMeasure" + count;
+      if (drink[ingredient] != null) {
+        if(drink[measurement] != null) {
+          thumbnailDiv.innerHTML += `<p align="center">${drink[measurement]} ${drink[ingredient]}</p>`
+        } else {
+          thumbnailDiv.innerHTML += `<p align="center">${drink[ingredient]}</p>`
+        }
+    }
+  }
+}
+
 //Enable the search button when a user types in the search field
 searchInputElement.addEventListener('keyup', (event) => {
     searchButtonElement.disabled = false;
@@ -51,25 +72,10 @@ function addRecipeCard(drink) {
 
   //Get all of the divs with class "thumbnail", and add an event listener to each one
   thumbnailDiv = document.getElementById(`thumb-${drink.strDrink}`);
+  
   thumbnailDiv.addEventListener('mouseenter', function (event) {
-    thumbnailDiv.style.backgroundColor = 'lightgray';
-    //console.log(drink);
-    thumbnailDiv.innerHTML = `<h2 align="center">Glass:</h2>`
-    thumbnailDiv.innerHTML += `<p align="center">${drink.strGlass}</p>`
-    thumbnailDiv.innerHTML += `<h2 align="center">Ingredients:</h2>`
+    swapThumbnailImage(drink);
     
-    const loopTimes = 16;
-    for (let count = 1; count < loopTimes; count++) {
-      let ingredient = "strIngredient" + count;
-      let measurement = "strMeasure" + count;
-      if (drink[ingredient] != null) {
-        if(drink[measurement] != null) {
-          thumbnailDiv.innerHTML += `<p align="center">${drink[measurement]} ${drink[ingredient]}</p>`
-        } else {
-          thumbnailDiv.innerHTML += `<p align="center">${drink[ingredient]}</p>`
-        }
-    }
-  }
     });
     thumbnailDiv.addEventListener("mouseleave", function (event) {
       thumbnailDiv.innerHTML = `<img src="${drink.strDrinkThumb}" />`;
