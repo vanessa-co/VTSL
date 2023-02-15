@@ -6,20 +6,21 @@ const recipeCardsContainer = document.querySelector('.recipes-container');
 searchButtonElement.disabled = true;
 
 function swapThumbnailImage(drink) {
+  thumbnailDiv = document.getElementById(`thumb-${drink.strDrink}`);
   thumbnailDiv.style.backgroundColor = 'lightgray';
-    //console.log(drink);
-    thumbnailDiv.innerHTML = `<h2 align="center">Glass:</h2>`
-    thumbnailDiv.innerHTML += `<p align="center">${drink.strGlass}</p>`
-    thumbnailDiv.innerHTML += `<h2 align="center">Ingredients:</h2>`
+  //console.log(drink);
+  thumbnailDiv.innerHTML = `<h2 align="center">Glass:</h2>`
+  thumbnailDiv.innerHTML += `<p align="center">${drink.strGlass}</p>`
+  thumbnailDiv.innerHTML += `<h2 align="center">Ingredients:</h2>`
     
-    const loopTimes = 16;
-    for (let count = 1; count < loopTimes; count++) {
-      let ingredient = "strIngredient" + count;
-      let measurement = "strMeasure" + count;
-      if (drink[ingredient] != null) {
-        if(drink[measurement] != null) {
+  const loopTimes = 16;
+  for (let count = 1; count < loopTimes; count++) {
+    let ingredient = "strIngredient" + count;
+    let measurement = "strMeasure" + count;
+    if (drink[ingredient] != null) {
+      if(drink[measurement] != null) {
           thumbnailDiv.innerHTML += `<p align="center">${drink[measurement]} ${drink[ingredient]}</p>`
-        } else {
+      } else {
           thumbnailDiv.innerHTML += `<p align="center">${drink[ingredient]}</p>`
         }
     }
@@ -75,7 +76,6 @@ function addRecipeCard(drink) {
   
   thumbnailDiv.addEventListener('mouseenter', function (event) {
     swapThumbnailImage(drink);
-    
     });
     thumbnailDiv.addEventListener("mouseleave", function (event) {
       thumbnailDiv.innerHTML = `<img src="${drink.strDrinkThumb}" />`;
