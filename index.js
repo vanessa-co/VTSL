@@ -50,7 +50,7 @@ function addRecipeCard(drink) {
   recipeCardsContainer.appendChild(recipeCardElement);
 
   //Get all of the divs with class "thumbnail", and add an event listener to each one
-  thumbnailDiv = document.querySelector(".thumbnail");
+  thumbnailDiv = document.getElementById(`thumb-${drink.strDrink}`);
   thumbnailDiv.addEventListener('mouseenter', function (event) {
     thumbnailDiv.style.backgroundColor = 'lightgray';
     //console.log(drink);
@@ -76,7 +76,6 @@ function addRecipeCard(drink) {
     })
     // code for buttons to work individually <- Tim
     let button = document.getElementById(`${drink.strDrink}`);
-    console.log(button);
     button.addEventListener("click", function () {
         if (button.innerHTML === "Like Me!") {
           button.innerHTML = "You liked this!";
@@ -90,7 +89,7 @@ function addRecipeCard(drink) {
 function buildRecipeCardHTML(drink) {
   
   return `
-    <div class="thumbnail"><img src="${drink.strDrinkThumb}" /></div>
+    <div class="thumbnail" id="thumb-${drink.strDrink}"><img src="${drink.strDrinkThumb}" /></div>
     <div><h2 align="center">${drink.strDrink}</h2></div>
     <button type="button" class="like-button" id="${drink.strDrink}">Like Me!</button>`
   ;
