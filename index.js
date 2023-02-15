@@ -27,7 +27,7 @@ function handleSearchButtonClick() {
       if(data.drinks != null) {
         data.drinks.forEach(addRecipeCard);
       } else {
-        recipeCardsContainer.innerHTML = '<h2 style="color: pink;">No resuts, loser!</h2><iframe src="https://giphy.com/embed/lBm6rHWoBEpaw" width="480" height="313" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/lBm6rHWoBEpaw">via GIPHY</a></p>';
+        recipeCardsContainer.innerHTML = '<h2 style="color: pink;">No results, loser!</h2><iframe src="https://giphy.com/embed/lBm6rHWoBEpaw" width="480" height="313" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/lBm6rHWoBEpaw">via GIPHY</a></p>';
       }
   });
 }
@@ -35,11 +35,6 @@ function handleSearchButtonClick() {
 // function to clear the recipe cards container
 function clearRecipeCardsContainer() {
   recipeCardsContainer.innerHTML = '';
-}
-
-//function to handle a user mousing over a recipe card
-function handleRecipeCardMouseOver(event) {
-
 }
 
 // function to add a recipe card for a drink to the recipe cards container
@@ -51,58 +46,55 @@ function addRecipeCard(drink) {
   // Set the inner HTML of the recipe card to display the drink information
   recipeCardElement.innerHTML = buildRecipeCardHTML(drink);
 
-  recipeCardElement.addEventListener("mouseleave", function (event) {
-    recipeCardElement.innerHTML = buildRecipeCardHTML(drink);
-  })
-  
-  recipeCardElement.addEventListener("mouseenter", function (event) {
-    recipeCardElement.style.backgroundColor = 'lightgray';
-    let target = event.target;
-    let parent = target.parentElement;
-    let ingredientArray = [];
+  // Append the recipe card to the recipe cards container
+  recipeCardsContainer.appendChild(recipeCardElement);
+
+  //Get all of the divs with class "thumbnail", and add an event listener to each one
+  thumbnailDiv = document.querySelector(".thumbnail");
+  thumbnailDiv.addEventListener('mouseenter', function (event) {
+    thumbnailDiv.style.backgroundColor = 'lightgray';
+    //console.log(drink);
+    thumbnailDiv.innerHTML = `<h2 align="center">Glass:</h2>`
+    thumbnailDiv.innerHTML += `<p align="center">${drink.strGlass}</p>`
+    thumbnailDiv.innerHTML += `<h2 align="center">Ingredients:</h2>`
     
-    recipeCardElement.innerHTML = `<button type="button" class="like-button">Like Me!</button>`
-    recipeCardElement.innerHTML += `<h2 align="center">Glass:</h2>`
-    recipeCardElement.innerHTML += `<p align="center">${drink.strGlass}</p>`
-    recipeCardElement.innerHTML += `<h2 align="center">Ingredients:</h2>`
     const loopTimes = 16;
-    for (let i = 1; i < loopTimes; i++) {
-      let ingredient = "strIngredient" + i;
-      let measurement = "strMeasure" + i;
+    for (let count = 1; count < loopTimes; count++) {
+      let ingredient = "strIngredient" + count;
+      let measurement = "strMeasure" + count;
       if (drink[ingredient] != null) {
         if(drink[measurement] != null) {
-        //ingredientArray.push(ingredient.strIngredient[i]);
-        recipeCardElement.innerHTML += `<p align="center">${drink[measurement]} ${drink[ingredient]}</p>`
+          thumbnailDiv.innerHTML += `<p align="center">${drink[measurement]} ${drink[ingredient]}</p>`
         } else {
-          recipeCardElement.innerHTML += `<p align="center">${drink[ingredient]}</p>`
+          thumbnailDiv.innerHTML += `<p align="center">${drink[ingredient]}</p>`
         }
     }
   }
-  // code for buttons to work individually <- Tim
-  let button = document.querySelectorAll(".like-button")[0];
-
-  button.addEventListener("click", function () {
-      if (button.innerHTML === "Like Me!") {
-        button.innerHTML = "You liked this! <3";
-      } else {
-        button.innerHTML = "Like Me!";
-      }
     });
-});
-  
-  
-
-  // Append the recipe card to the recipe cards container
-  recipeCardsContainer.appendChild(recipeCardElement);
+    thumbnailDiv.addEventListener("mouseleave", function (event) {
+      thumbnailDiv.innerHTML = `<img src="${drink.strDrinkThumb}" />`;
+    })
+    // code for buttons to work individually <- Tim
+    let button = document.getElementById(`${drink.strDrink}`);
+    console.log(button);
+    button.addEventListener("click", function () {
+        if (button.innerHTML === "Like Me!") {
+          button.innerHTML = "You liked this!";
+        } else {
+          button.innerHTML = "Like Me!";
+        }
+      });
 }
 
 // function to build the HTML for a recipe card based on a drink object
 function buildRecipeCardHTML(drink) {
+  
   return `
-    <img src="${drink.strDrinkThumb}" />
-    <h2 align="center">${drink.strDrink}</h2>`
-    //<button type="button" class="like-button">Like <3</button>
+    <div class="thumbnail"><img src="${drink.strDrinkThumb}" /></div>
+    <div><h2 align="center">${drink.strDrink}</h2></div>
+    <button type="button" class="like-button" id="${drink.strDrink}">Like Me!</button>`
   ;
+  
 }
 
 // Add a click event listener to the search button
